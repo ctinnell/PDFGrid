@@ -119,21 +119,23 @@ class PDFGridDocument {
     
     private func drawText(text: String, frame: CGRect, column: Int) {
         let size = (text as NSString).sizeWithAttributes([NSFontAttributeName:font])
-        let textFrame = centerFrame(CGRectMake(frame.origin.x, frame.origin.y, size.width, size.height), column: column)
+        let outerFrameSize = CGSizeMake(CGFloat(columnWidths[column]), rowHeight)
+        let textFrame = centerFrame(CGRectMake(frame.origin.x, frame.origin.y, size.width, size.height), outerFrameSize: outerFrameSize)
         
         (text as NSString).drawInRect(textFrame, withAttributes: [NSFontAttributeName : font,
             NSForegroundColorAttributeName: UIColor.blackColor()])
     }
     
-    private func centerFrame(frame: CGRect, column: Int) -> CGRect {
-        let columnWidth = CGFloat(columnWidths[column])
-        let width = (frame.size.width > columnWidth) ? columnWidth : frame.size.width
-        let xPosition = (width == columnWidth) ? frame.origin.x : frame.origin.x + ((columnWidth - width) / 2)
+    private func centerFrame(frameToCenter: CGRect, outerFrameSize: CGSize) -> CGRect {
+        // constrain w,h to outer bounds
+        let newWidth = (frameToCenter.size.width > outerFrameSize.width) ? outerFrameSize.width : frameToCenter.size.width
+        let newHeight = (frameToCenter.size.height > outerFrameSize.height) ? outerFrameSize.height : frameToCenter.size.height
+
+        // calculate new x,y
+        let xPosition = (newWidth == outerFrameSize.width) ? frameToCenter.origin.x : frameToCenter.origin.x + ((outerFrameSize.width - newWidth) / 2)
+        let yPosition = (newHeight == outerFrameSize.height) ? frameToCenter.origin.y : frameToCenter.origin.y + ((outerFrameSize.height - newHeight) / 2)
         
-        let height = (frame.size.height > rowHeight) ? rowHeight : frame.size.height
-        let yPosition = (height == rowHeight) ? frame.origin.y : frame.origin.y + ((rowHeight - height) / 2)
-        
-        return CGRectMake(xPosition, yPosition, width, height)
+        return CGRectMake(xPosition, yPosition, newWidth, newHeight)
      }
     
     private func calculateColumnWidths() -> [Float] {
