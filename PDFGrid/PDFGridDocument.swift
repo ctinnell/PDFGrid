@@ -25,9 +25,10 @@ class PDFGridDocument {
     private let filePath: String
     
     private let numberOfColumns: Int
-    private let columnWidth: CGFloat
+
+    private var columnWidths: [Float]
     private let rowHeight = CGFloat(25.0)
-    private let pageSize = CGSizeMake(792.0, 612.0)
+    private var pageSize = CGSizeMake(792.0, 612.0)
     
     private var currentPage = 0;
     private var currentRow = 0;
@@ -42,7 +43,6 @@ class PDFGridDocument {
         self.columnTitles = columnTitles
         self.detailValues = detailValues
         self.numberOfColumns = columnTitles.count
-        self.columnWidth = (pageSize.width - ((borderInset + lineWidth) * 2.0)) / CGFloat(numberOfColumns)
         self.headerHeight = headerHeight
         self.footerHeight = footerHeight
         self.gridBackgroundColor = gridBackgroundColor
@@ -53,6 +53,8 @@ class PDFGridDocument {
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
         let documentsDirectory = paths[0] as String
         self.filePath = documentsDirectory.stringByAppendingPathComponent(fileName).stringByAppendingPathExtension(".pdf")!
+        self.columnWidths = []
+        self.columnWidths = calculateColumnWidths()
     }
     
     func generate() -> String {
@@ -90,12 +92,14 @@ class PDFGridDocument {
     
     private func drawRow(rowValues: [String], startingYPosition: CGFloat, backgroundColor: UIColor) -> CGFloat {
         var xPosition = borderInset + lineWidth
+        var column = 0
         for value in rowValues {
-            let rect = CGRectMake(xPosition, startingYPosition, columnWidth, rowHeight)
+            let rect = CGRectMake(xPosition, startingYPosition, CGFloat(columnWidths[column]), rowHeight)
             drawRectangle(rect)
             fillRectangle(rect, fillColor: backgroundColor)
-            drawText(value, frame: rect)
-            xPosition += columnWidth
+            drawText(value, frame: rect, column: column)
+            xPosition += CGFloat(columnWidths[column])
+            column++
         }
         return startingYPosition + rowHeight
     }
@@ -113,15 +117,16 @@ class PDFGridDocument {
         CGContextFillRect(context, frame)
     }
     
-    private func drawText(text: String, frame: CGRect) {
+    private func drawText(text: String, frame: CGRect, column: Int) {
         let size = (text as NSString).sizeWithAttributes([NSFontAttributeName:font])
-        let textFrame = centerFrame(CGRectMake(frame.origin.x, frame.origin.y, size.width, size.height))
+        let textFrame = centerFrame(CGRectMake(frame.origin.x, frame.origin.y, size.width, size.height), column: column)
         
         (text as NSString).drawInRect(textFrame, withAttributes: [NSFontAttributeName : font,
             NSForegroundColorAttributeName: UIColor.blackColor()])
     }
     
-    private func centerFrame(frame: CGRect) -> CGRect {
+    private func centerFrame(frame: CGRect, column: Int) -> CGRect {
+        let columnWidth = CGFloat(columnWidths[column])
         let width = (frame.size.width > columnWidth) ? columnWidth : frame.size.width
         let xPosition = (width == columnWidth) ? frame.origin.x : frame.origin.x + ((columnWidth - width) / 2)
         
@@ -131,7 +136,45 @@ class PDFGridDocument {
         return CGRectMake(xPosition, yPosition, width, height)
      }
     
-    //TODO: Calculate column widths into an array instead of evenly distributing them.
+    private func calculateColumnWidths() -> [Float] {
+        var widths: [Float] = []
+        
+        // start with the column titles
+        for (var x=0; x<countElements(columnTitles); x++) {
+            widths.append(newWidth(columnTitles[x], oldWidth: 0.0))
+        }
+        
+        // loop through detail items
+        for detail in detailValues {
+            for (var x=0; x<numberOfColumns; x++) {
+                widths[x] = newWidth(detail[x], oldWidth: widths[x])
+            }
+        }
+        
+        // pad all columns evenly to full length of grid
+        let sumOfColumnWidths = widths.reduce(0) {$0 + $1}
+        
+        let lineWidthAndBorderInsetWidth = ((lineWidth + borderInset) * 2.0)
+        let gridWidth = Float(pageSize.width - lineWidthAndBorderInsetWidth)
+        if CGFloat(sumOfColumnWidths) < CGFloat(gridWidth) {
+            let columnPadding = (gridWidth - sumOfColumnWidths) / Float(numberOfColumns)
+            for (var x=0; x<countElements(columnTitles); x++) {
+                widths[x] = widths[x] + columnPadding
+            }
+        }
+        else {
+            // the grid size is now bigger than the original specified size
+            pageSize = CGSizeMake(CGFloat(sumOfColumnWidths) + lineWidthAndBorderInsetWidth, pageSize.height)
+        }
+        
+        return widths
+    }
+    
+    private func newWidth(value: String, oldWidth: Float) -> Float {
+        let size = (value as NSString).sizeWithAttributes([NSFontAttributeName:font])
+        return ((Float(size.width)) > oldWidth) ? Float(size.width) + 10.0 : oldWidth
+    }
+    
     //TODO: Add a page break. Possibly a canFitAnotherRow method and a createNewPage method.
     //TODO: What about multiple page types within a document? Is this necessary?
 
