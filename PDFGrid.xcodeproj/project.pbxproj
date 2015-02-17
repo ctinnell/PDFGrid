@@ -13,6 +13,7 @@
 		84AFEE741A91360E0048CD58 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84AFEE731A91360E0048CD58 /* Images.xcassets */; };
 		84AFEE771A91360E0048CD58 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AFEE751A91360E0048CD58 /* LaunchScreen.xib */; };
 		84AFEE831A91360E0048CD58 /* PDFGridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFEE821A91360E0048CD58 /* PDFGridTests.swift */; };
+		84AFEE8D1A9136F40048CD58 /* PDFGridDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFEE8C1A9136F40048CD58 /* PDFGridDocument.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		84AFEE7C1A91360E0048CD58 /* PDFGridTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PDFGridTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84AFEE811A91360E0048CD58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84AFEE821A91360E0048CD58 /* PDFGridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFGridTests.swift; sourceTree = "<group>"; };
+		84AFEE8C1A9136F40048CD58 /* PDFGridDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFGridDocument.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 			children = (
 				84AFEE6C1A91360E0048CD58 /* AppDelegate.swift */,
 				84AFEE6E1A91360E0048CD58 /* ViewController.swift */,
+				84AFEE8C1A9136F40048CD58 /* PDFGridDocument.swift */,
 				84AFEE701A91360E0048CD58 /* Main.storyboard */,
 				84AFEE731A91360E0048CD58 /* Images.xcassets */,
 				84AFEE751A91360E0048CD58 /* LaunchScreen.xib */,
@@ -213,6 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84AFEE6F1A91360E0048CD58 /* ViewController.swift in Sources */,
+				84AFEE8D1A9136F40048CD58 /* PDFGridDocument.swift in Sources */,
 				84AFEE6D1A91360E0048CD58 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
