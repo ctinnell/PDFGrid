@@ -28,7 +28,7 @@ class ViewController: UIViewController {
     
     func generatePDF() -> String {
         // http://stats.nba.com/league/player/#!/?sort=PTS&dir=1&PerMode=Totals
-        let columnTitles = ["Player", "Games", "Minutes", "FG %", "Rebounds", "Assists", "Points"]
+        let columnTitles = ["Player", "Games", "Minutes", "FG PCT", "Rebounds", "Assists", "Points"]
         let detailValues = [["James Harden", "53", "1940", "45.5", "50", "360", "1451"],
                             ["Stephen Curry", "51", "1695", "48.1", "240", "402", "1203"]]
         
