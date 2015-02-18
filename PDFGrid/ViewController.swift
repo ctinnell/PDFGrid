@@ -32,7 +32,7 @@ class ViewController: UIViewController {
         let detailValues = [["James Harden", "53", "1940", "45.5", "50", "360", "1451"],
                             ["Stephen Curry", "51", "1695", "48.1", "240", "402", "1203"]]
         
-        let document = PDFGridDocument(columnTitles: columnTitles, detailValues: detailValues, headerHeight: 25.0, footerHeight: 0.0, headerBackgroundColor: UIColor.grayColor(), gridBackgroundColor: UIColor.lightGrayColor(), footerBackgroundColor: UIColor.grayColor(), fileName: "NBAStats")
+        let document = PDFGridDocument(columnTitles: columnTitles, detailValues: detailValues, gridBackgroundColor: UIColor.lightGrayColor(), fileName: "NBAStats")
         
         return document.generate()
     }

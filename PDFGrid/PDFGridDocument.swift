@@ -39,15 +39,15 @@ class PDFGridDocument {
 
     private let font = UIFont.systemFontOfSize(12.0)
     
-    init(columnTitles: [String], detailValues: [[String]], headerHeight: CGFloat, footerHeight: CGFloat, headerBackgroundColor: UIColor, gridBackgroundColor: UIColor, footerBackgroundColor: UIColor, fileName: String) {
+    init(columnTitles: [String], detailValues: [[String]], gridBackgroundColor: UIColor, fileName: String) {
         self.columnTitles = columnTitles
         self.detailValues = detailValues
         self.numberOfColumns = columnTitles.count
-        self.headerHeight = headerHeight
-        self.footerHeight = footerHeight
+        self.headerHeight = 0.0
+        self.footerHeight = 0.0
         self.gridBackgroundColor = gridBackgroundColor
-        self.headerBackgroundColor = headerBackgroundColor
-        self.footerBackgroundColor = footerBackgroundColor
+        self.headerBackgroundColor = UIColor.grayColor()
+        self.footerBackgroundColor = UIColor.grayColor()
         self.fileName = fileName
         
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
@@ -79,7 +79,7 @@ class PDFGridDocument {
     }
     
     private func addTheColumnTitles(yPosition: CGFloat) -> CGFloat {
-        return drawRow(columnTitles, startingYPosition: yPosition, backgroundColor: UIColor.grayColor())
+        return drawRow(columnTitles, startingYPosition: yPosition, backgroundColor: headerBackgroundColor)
     }
     
     private func addTheDetailValues(yPosition: CGFloat) -> CGFloat {
