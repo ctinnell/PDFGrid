@@ -224,13 +224,10 @@ class PDFGridDocument {
     
     private func newWidth(value: String, oldWidth: Float) -> Float {
         let size = sizeForString(value, width: CGFloat(0.0))
-        return ((Float(size.width)) > oldWidth) ? Float(size.width) + 10.0 : oldWidth
+        return ((Float(size.width)) > oldWidth) ? Float(size.width) : oldWidth
     }
-    
-    //TODO: Add prefers Multi-line header option using:
-    // https://developer.apple.com/library/mac/documentation/Cocoa/Reference/ApplicationKit/Classes/NSString_AppKitAdditions/index.html#//apple_ref/occ/instm/NSString/boundingRectWithSize:options:attributes:
-    // and: let arr = split(str, { $0 == " "}, maxSplit: Int.max, allowEmptySlices: false)
+
+    //TODO: Headers... Need to allow for multiple headers, and to deal with column spans.
     //TODO: Add a page break. Possibly a canFitAnotherRow method and a createNewPage method.
-    //TODO: What about multiple page types within a document? Is this necessary?
 
 }
