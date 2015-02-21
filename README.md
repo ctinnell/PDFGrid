@@ -7,6 +7,11 @@ corporate applications. This project will give you a simple way to create a grid
 
 ## Sample Code
 ```swift
+
+let columnTitles = ["Player", "Games", "Minutes", "FG PCT", "Rebounds", "Assists", "Points"]
+var detailValues = [["James Harden", "53", "1940", "45.5", "50", "360", "1451"],
+                    ["Stephen Curry", "51", "1695", "48.1", "240", "402", "1203"]]
+
 let document = PDFGridDocument(columnTitles: columnTitles, 
                                detailValues: detailValues, 
                         gridBackgroundColor: rowColor, 
