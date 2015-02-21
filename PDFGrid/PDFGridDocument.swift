@@ -16,16 +16,16 @@ class PDFGridDocument {
     var multiLineColumnTitles: Bool = true
     let detailValues: [[String]]
     
-    struct gridHeader {
+    private struct gridHeader {
         var row: Int
         var title: String
-        var height: Float
+        var height: CGFloat
         var startingColumn: Int
         var endingColumn: Int
         var backGroundColor: UIColor
     }
+    private var gridHeaders: [gridHeader]
     
-    var gridHeaders: [gridHeader]
     let headerHeight: CGFloat
     let headerBackgroundColor: UIColor
     
@@ -52,7 +52,7 @@ class PDFGridDocument {
     private let borderColor = UIColor.blackColor().CGColor
 
     private let font = UIFont.systemFontOfSize(12.0)
-    
+    private let headerFont = UIFont.boldSystemFontOfSize(12.0)
 
     
     init(columnTitles: [String], detailValues: [[String]], gridBackgroundColor: UIColor, fileName: String) {
@@ -75,11 +75,17 @@ class PDFGridDocument {
         (self.columnTitleWidths, self.columnWidths) = calculateColumnWidths()
     }
     
+    func addHeader(row: Int, title: String, height: CGFloat, startingColumn: Int, endingColumn: Int, backgroundColor: UIColor) {
+        let header = gridHeader(row: row, title: title, height: height, startingColumn: startingColumn, endingColumn: endingColumn, backGroundColor: backgroundColor)
+        self.gridHeaders.append(header)
+    }
+    
     func generate() -> String {
         UIGraphicsBeginPDFContextToFile(self.filePath, CGRectZero, nil);
         UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, pageSize.width, pageSize.height), nil)
         
         var nextYPosition = borderInset + lineWidth
+        nextYPosition = addTheHeaders(nextYPosition)
         nextYPosition = addTheColumnTitles(nextYPosition)
         nextYPosition = addTheDetailValues(nextYPosition)
         addTheBorder()
@@ -92,12 +98,35 @@ class PDFGridDocument {
     private func addTheHeaders(yPosition: CGFloat) -> CGFloat {
         var nextYPosition = yPosition
         var row = -1
+        var height = CGFloat(0.0)
         for header in gridHeaders {
             row = (row == -1) ? header.row : row //first time through
-            let width = widthForColumnSpan(header.startingColumn, endingColumn: header.endingColumn)
+            if row == -1 {
+                row = header.row
+                initializeHeaderRow(nextYPosition, height: header.height, backgroundColor: header.backGroundColor)
+            }
+            else if header.row > row {
+                nextYPosition += height
+                initializeHeaderRow(nextYPosition, height: header.height, backgroundColor: header.backGroundColor)
+                row = header.row
+            }
+            height = header.height
             
+            let width = widthForColumnSpan(header.startingColumn, endingColumn: header.endingColumn)
+            let frame = CGRectMake(xPositionForColumn(header.startingColumn), nextYPosition, width, header.height)
+            drawRectangle(frame)
+            fillRectangle(frame, fillColor: header.backGroundColor)
+            
+            drawDetailText(header.title, frame: frame, columnWidth: width, textFont: headerFont, rowHeight: header.height)
         }
-        return nextYPosition
+        return nextYPosition + height
+    }
+    
+    private func initializeHeaderRow(yPosition: CGFloat, height: CGFloat, backgroundColor: UIColor) {
+        let width = widthForColumnSpan(0, endingColumn: self.columnTitles.count-1)
+        let frame = CGRectMake(xPositionForColumn(0), yPosition, width, height)
+        drawRectangle(frame)
+        fillRectangle(frame, fillColor: backgroundColor)
     }
     
     private func xPositionForColumn(column: Int) -> CGFloat {
@@ -144,10 +173,10 @@ class PDFGridDocument {
             drawRectangle(rect)
             fillRectangle(rect, fillColor: backgroundColor)
             if isColumnHeader {
-                drawHeaderText(value, frame: rect, column: column)
+                drawHeaderText(value, frame: rect, columnWidth: CGFloat(columnWidths[column]), textFont: font, rowHeight: rowHeight)
             }
             else {
-                drawDetailText(value, frame: rect, column: column)
+                drawDetailText(value, frame: rect, columnWidth: CGFloat(columnWidths[column]), textFont: font, rowHeight: rowHeight)
             }
             xPosition += CGFloat(columnWidths[column])
             column++
@@ -168,31 +197,31 @@ class PDFGridDocument {
         CGContextFillRect(context, frame)
     }
     
-    private func drawHeaderText(text: String, frame: CGRect, column: Int) {
+    private func drawHeaderText(text: String, frame: CGRect, columnWidth: CGFloat, textFont: UIFont, rowHeight: CGFloat) {
         if multiLineColumnTitles {
-            var adjustedFrame = (text as NSString).boundingRectWithSize(CGSizeMake(CGFloat(columnTitleWidths[column]), CGFloat.max), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName:font], context: nil)
+            var adjustedFrame = (text as NSString).boundingRectWithSize(CGSizeMake(columnWidth, CGFloat.max), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName:textFont], context: nil)
             
             adjustedFrame = CGRectMake(frame.origin.x, frame.origin.y, adjustedFrame.width, adjustedFrame.height)
-            drawText(text, frame: adjustedFrame, column: column, adjustedRowHeight: titleRowHeight)
+            drawText(text, frame: adjustedFrame, columnWidth: columnWidth, adjustedRowHeight: titleRowHeight, textFont: textFont)
         }
         else {
-            drawDetailText(text, frame: frame, column: column)
+            drawDetailText(text, frame: frame, columnWidth: columnWidth, textFont: textFont, rowHeight: rowHeight)
         }
     }
     
-    private func drawDetailText(text: String, frame: CGRect, column: Int) {
-        var size = (text as NSString).sizeWithAttributes([NSFontAttributeName:font])
+    private func drawDetailText(text: String, frame: CGRect, columnWidth: CGFloat, textFont: UIFont, rowHeight: CGFloat) {
+        var size = (text as NSString).sizeWithAttributes([NSFontAttributeName:textFont])
         let adjustedFrame = CGRectMake(frame.origin.x, frame.origin.y, size.width, size.height)
         
-        drawText(text, frame: adjustedFrame, column: column, adjustedRowHeight: rowHeight)
+        drawText(text, frame: adjustedFrame, columnWidth: columnWidth, adjustedRowHeight: rowHeight, textFont: textFont)
     }
     
-    private func drawText(text: String, frame: CGRect, column: Int, adjustedRowHeight: CGFloat) {
+    private func drawText(text: String, frame: CGRect, columnWidth: CGFloat, adjustedRowHeight: CGFloat, textFont: UIFont) {
         let context = UIGraphicsGetCurrentContext()
         
-        let outerFrameSize = CGSizeMake(CGFloat(columnWidths[column]), adjustedRowHeight)
+        let outerFrameSize = CGSizeMake(columnWidth, adjustedRowHeight)
         var textFrame = centerFrame(frame, outerFrameSize: outerFrameSize)
-        (text as NSString).drawWithRect(textFrame, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName : font,
+        (text as NSString).drawWithRect(textFrame, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName : textFont,
             NSForegroundColorAttributeName: UIColor.blackColor()], context: nil)
     }
     

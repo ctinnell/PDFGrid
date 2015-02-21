@@ -34,6 +34,12 @@ class ViewController: UIViewController {
         
         let document = PDFGridDocument(columnTitles: columnTitles, detailValues: detailValues, gridBackgroundColor: UIColor.lightGrayColor(), fileName: "NBAStats")
         
+        document.addHeader(0, title: "NBA Player Statistics", height: 35.0, startingColumn: 0, endingColumn: columnTitles.count-1, backgroundColor: UIColor.lightGrayColor())
+
+        document.addHeader(1, title: "Time On The Court", height: 25.0, startingColumn: 0, endingColumn: 2, backgroundColor: UIColor.lightGrayColor())
+        document.addHeader(1, title: "Key Stats", height: 25.0, startingColumn: 3, endingColumn: 4, backgroundColor: UIColor.lightGrayColor())
+        document.addHeader(1, title: "Scoring", height: 25.0, startingColumn: 5, endingColumn: 6, backgroundColor: UIColor.lightGrayColor())
+
         return document.generate()
     }
     
