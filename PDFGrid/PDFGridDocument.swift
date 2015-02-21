@@ -82,7 +82,6 @@ class PDFGridDocument {
     
     func generate() -> String {
         UIGraphicsBeginPDFContextToFile(self.filePath, CGRectZero, nil);
-        UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, pageSize.width, pageSize.height), nil)
         
         var nextYPosition = startNewPage()
         nextYPosition = addTheDetailValues(nextYPosition)
@@ -94,10 +93,15 @@ class PDFGridDocument {
     }
     
     private func startNewPage() -> CGFloat {
+        UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, pageSize.width, pageSize.height), nil)
         var nextYPosition = borderInset + lineWidth
         nextYPosition = addTheHeaders(nextYPosition)
         nextYPosition = addTheColumnTitles(nextYPosition)
         return nextYPosition
+    }
+    
+    private func startNewPageIfNecessary(yPosition: CGFloat) -> CGFloat {
+        return (yPosition + rowHeight + footerHeight >= (pageSize.height - 10)) ? startNewPage() : yPosition
     }
     
     private func addTheHeaders(yPosition: CGFloat) -> CGFloat {
@@ -164,6 +168,7 @@ class PDFGridDocument {
     private func addTheDetailValues(yPosition: CGFloat) -> CGFloat {
         var nextYPosition = yPosition
         for detailRow in self.detailValues {
+            nextYPosition = startNewPageIfNecessary(nextYPosition)
             nextYPosition = drawRow(detailRow, startingYPosition: nextYPosition, backgroundColor: gridBackgroundColor, isColumnHeader: false)
         }
         return nextYPosition
