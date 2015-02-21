@@ -16,6 +16,16 @@ class PDFGridDocument {
     var multiLineColumnTitles: Bool = true
     let detailValues: [[String]]
     
+    struct gridHeader {
+        var row: Int
+        var title: String
+        var height: Float
+        var startingColumn: Int
+        var endingColumn: Int
+        var backGroundColor: UIColor
+    }
+    
+    var gridHeaders: [gridHeader]
     let headerHeight: CGFloat
     let headerBackgroundColor: UIColor
     
@@ -43,6 +53,8 @@ class PDFGridDocument {
 
     private let font = UIFont.systemFontOfSize(12.0)
     
+
+    
     init(columnTitles: [String], detailValues: [[String]], gridBackgroundColor: UIColor, fileName: String) {
         self.columnTitles = columnTitles
         self.detailValues = detailValues
@@ -58,6 +70,7 @@ class PDFGridDocument {
         let documentsDirectory = paths[0] as String
         self.filePath = documentsDirectory.stringByAppendingPathComponent(fileName).stringByAppendingPathExtension(".pdf")!
         self.columnWidths = []
+        self.gridHeaders = []
         self.columnTitleWidths = []
         (self.columnTitleWidths, self.columnWidths) = calculateColumnWidths()
     }
@@ -67,13 +80,40 @@ class PDFGridDocument {
         UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, pageSize.width, pageSize.height), nil)
         
         var nextYPosition = borderInset + lineWidth
-        addTheBorder()
         nextYPosition = addTheColumnTitles(nextYPosition)
         nextYPosition = addTheDetailValues(nextYPosition)
+        addTheBorder()
         
         UIGraphicsEndPDFContext();
         
         return filePath
+    }
+    
+    private func addTheHeaders(yPosition: CGFloat) -> CGFloat {
+        var nextYPosition = yPosition
+        var row = -1
+        for header in gridHeaders {
+            row = (row == -1) ? header.row : row //first time through
+            let width = widthForColumnSpan(header.startingColumn, endingColumn: header.endingColumn)
+            
+        }
+        return nextYPosition
+    }
+    
+    private func xPositionForColumn(column: Int) -> CGFloat {
+        var xPosition = CGFloat(borderInset + lineWidth)
+        for (var x=0; x<column; x++) {
+            xPosition += CGFloat(columnWidths[x])
+        }
+        return xPosition
+    }
+    
+    private func widthForColumnSpan(startingColumn: Int, endingColumn: Int) -> CGFloat {
+        var width = CGFloat(0.0)
+        for (var x=startingColumn; x<=endingColumn; x++) {
+            width += CGFloat(columnWidths[x])
+        }
+        return width
     }
     
     private func addTheBorder() {
