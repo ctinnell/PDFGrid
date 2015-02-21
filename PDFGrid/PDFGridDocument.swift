@@ -84,15 +84,20 @@ class PDFGridDocument {
         UIGraphicsBeginPDFContextToFile(self.filePath, CGRectZero, nil);
         UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, pageSize.width, pageSize.height), nil)
         
-        var nextYPosition = borderInset + lineWidth
-        nextYPosition = addTheHeaders(nextYPosition)
-        nextYPosition = addTheColumnTitles(nextYPosition)
+        var nextYPosition = startNewPage()
         nextYPosition = addTheDetailValues(nextYPosition)
         addTheBorder()
         
         UIGraphicsEndPDFContext();
         
         return filePath
+    }
+    
+    private func startNewPage() -> CGFloat {
+        var nextYPosition = borderInset + lineWidth
+        nextYPosition = addTheHeaders(nextYPosition)
+        nextYPosition = addTheColumnTitles(nextYPosition)
+        return nextYPosition
     }
     
     private func addTheHeaders(yPosition: CGFloat) -> CGFloat {
