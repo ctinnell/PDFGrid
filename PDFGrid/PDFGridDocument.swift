@@ -51,8 +51,8 @@ class PDFGridDocument {
     private let lineWidth   = CGFloat(1.0)
     private let borderColor = UIColor.blackColor().CGColor
 
-    private let font = UIFont.systemFontOfSize(12.0)
-    private let headerFont = UIFont.boldSystemFontOfSize(12.0)
+    var font = UIFont.systemFontOfSize(12.0)
+    var headerFont = UIFont.boldSystemFontOfSize(12.0)
 
     
     init(columnTitles: [String], detailValues: [[String]], gridBackgroundColor: UIColor, fileName: String) {
@@ -231,7 +231,11 @@ class PDFGridDocument {
         
         let outerFrameSize = CGSizeMake(columnWidth, adjustedRowHeight)
         var textFrame = centerFrame(frame, outerFrameSize: outerFrameSize)
-        (text as NSString).drawWithRect(textFrame, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName : textFont,
+        
+        // the | character will force a new line
+        let adjustedText = (text as NSString).stringByReplacingOccurrencesOfString("|", withString:"\n\n")
+        
+        (adjustedText as NSString).drawWithRect(textFrame, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName : textFont,
             NSForegroundColorAttributeName: UIColor.blackColor()], context: nil)
     }
     
@@ -297,7 +301,6 @@ class PDFGridDocument {
     }
     
     private func sizeForString(value: String, width: CGFloat) -> CGSize {
-        //return (value as NSString).sizeWithAttributes([NSFontAttributeName:font])
         return (value as NSString).boundingRectWithSize(CGSizeMake(width, CGFloat.max), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName:font], context: nil).size
     }
     
@@ -305,8 +308,5 @@ class PDFGridDocument {
         let size = sizeForString(value, width: CGFloat(0.0))
         return ((Float(size.width)) > oldWidth) ? Float(size.width) : oldWidth
     }
-
-    //TODO: Headers... Need to allow for multiple headers, and to deal with column spans.
-    //TODO: Add a page break. Possibly a canFitAnotherRow method and a createNewPage method.
 
 }
