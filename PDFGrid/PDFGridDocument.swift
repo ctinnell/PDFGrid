@@ -232,10 +232,8 @@ class PDFGridDocument {
         let outerFrameSize = CGSizeMake(columnWidth, adjustedRowHeight)
         var textFrame = centerFrame(frame, outerFrameSize: outerFrameSize)
         
-        // the | character will force a new line
-        let adjustedText = (text as NSString).stringByReplacingOccurrencesOfString("|", withString:"\n\n")
         
-        (adjustedText as NSString).drawWithRect(textFrame, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName : textFont,
+        (text as NSString).drawWithRect(textFrame, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName : textFont,
             NSForegroundColorAttributeName: UIColor.blackColor()], context: nil)
     }
     
