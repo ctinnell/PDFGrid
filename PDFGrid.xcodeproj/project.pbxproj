@@ -12,19 +12,8 @@
 		84AFEE721A91360E0048CD58 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84AFEE701A91360E0048CD58 /* Main.storyboard */; };
 		84AFEE741A91360E0048CD58 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84AFEE731A91360E0048CD58 /* Images.xcassets */; };
 		84AFEE771A91360E0048CD58 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AFEE751A91360E0048CD58 /* LaunchScreen.xib */; };
-		84AFEE831A91360E0048CD58 /* PDFGridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFEE821A91360E0048CD58 /* PDFGridTests.swift */; };
 		84AFEE8D1A9136F40048CD58 /* PDFGridDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFEE8C1A9136F40048CD58 /* PDFGridDocument.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		84AFEE7D1A91360E0048CD58 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 84AFEE5F1A91360E0048CD58 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 84AFEE661A91360E0048CD58;
-			remoteInfo = PDFGrid;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		84AFEE671A91360E0048CD58 /* PDFGrid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PDFGrid.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -34,7 +23,6 @@
 		84AFEE711A91360E0048CD58 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		84AFEE731A91360E0048CD58 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		84AFEE761A91360E0048CD58 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		84AFEE7C1A91360E0048CD58 /* PDFGridTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PDFGridTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84AFEE811A91360E0048CD58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84AFEE821A91360E0048CD58 /* PDFGridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFGridTests.swift; sourceTree = "<group>"; };
 		84AFEE8C1A9136F40048CD58 /* PDFGridDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFGridDocument.swift; sourceTree = "<group>"; };
@@ -42,13 +30,6 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		84AFEE641A91360E0048CD58 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		84AFEE791A91360E0048CD58 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -71,7 +52,6 @@
 			isa = PBXGroup;
 			children = (
 				84AFEE671A91360E0048CD58 /* PDFGrid.app */,
-				84AFEE7C1A91360E0048CD58 /* PDFGridTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -135,24 +115,6 @@
 			productReference = 84AFEE671A91360E0048CD58 /* PDFGrid.app */;
 			productType = "com.apple.product-type.application";
 		};
-		84AFEE7B1A91360E0048CD58 /* PDFGridTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 84AFEE891A91360E0048CD58 /* Build configuration list for PBXNativeTarget "PDFGridTests" */;
-			buildPhases = (
-				84AFEE781A91360E0048CD58 /* Sources */,
-				84AFEE791A91360E0048CD58 /* Frameworks */,
-				84AFEE7A1A91360E0048CD58 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				84AFEE7E1A91360E0048CD58 /* PBXTargetDependency */,
-			);
-			name = PDFGridTests;
-			productName = PDFGridTests;
-			productReference = 84AFEE7C1A91360E0048CD58 /* PDFGridTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -166,10 +128,6 @@
 				TargetAttributes = {
 					84AFEE661A91360E0048CD58 = {
 						CreatedOnToolsVersion = 6.1.1;
-					};
-					84AFEE7B1A91360E0048CD58 = {
-						CreatedOnToolsVersion = 6.1.1;
-						TestTargetID = 84AFEE661A91360E0048CD58;
 					};
 				};
 			};
@@ -187,7 +145,6 @@
 			projectRoot = "";
 			targets = (
 				84AFEE661A91360E0048CD58 /* PDFGrid */,
-				84AFEE7B1A91360E0048CD58 /* PDFGridTests */,
 			);
 		};
 /* End PBXProject section */
@@ -200,13 +157,6 @@
 				84AFEE721A91360E0048CD58 /* Main.storyboard in Resources */,
 				84AFEE771A91360E0048CD58 /* LaunchScreen.xib in Resources */,
 				84AFEE741A91360E0048CD58 /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		84AFEE7A1A91360E0048CD58 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,23 +173,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		84AFEE781A91360E0048CD58 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				84AFEE831A91360E0048CD58 /* PDFGridTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		84AFEE7E1A91360E0048CD58 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 84AFEE661A91360E0048CD58 /* PDFGrid */;
-			targetProxy = 84AFEE7D1A91360E0048CD58 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		84AFEE701A91360E0048CD58 /* Main.storyboard */ = {
@@ -363,42 +297,6 @@
 			};
 			name = Release;
 		};
-		84AFEE8A1A91360E0048CD58 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = PDFGridTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.claytinnell.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PDFGrid.app/PDFGrid";
-			};
-			name = Debug;
-		};
-		84AFEE8B1A91360E0048CD58 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = PDFGridTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.claytinnell.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PDFGrid.app/PDFGrid";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -416,15 +314,6 @@
 			buildConfigurations = (
 				84AFEE871A91360E0048CD58 /* Debug */,
 				84AFEE881A91360E0048CD58 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		84AFEE891A91360E0048CD58 /* Build configuration list for PBXNativeTarget "PDFGridTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				84AFEE8A1A91360E0048CD58 /* Debug */,
-				84AFEE8B1A91360E0048CD58 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
