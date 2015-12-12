@@ -83,13 +83,13 @@ class ViewController: UIViewController {
     }
     
     func loadPDFInWebView(filePath: String) {
-        if let fileURL = NSURL(fileURLWithPath: filePath) {
-            var request = NSURLRequest(URL: fileURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 20.0)
+        let fileURL = NSURL(fileURLWithPath: filePath)
+        let request = NSURLRequest(URL: fileURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 20.0)
             
-            webView.loadRequest(request)
-            webView.scalesPageToFit = true
-            webView.sizeToFit()
-        }
+        webView.loadRequest(request)
+        webView.scalesPageToFit = true
+        webView.sizeToFit()
+        
     }
 
 

@@ -159,6 +159,8 @@
 		84AFEE5F1A91360E0048CD58 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0720;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Clay Tinnell";
 				TargetAttributes = {
@@ -411,6 +413,7 @@
 				84AFEE881A91360E0048CD58 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		84AFEE891A91360E0048CD58 /* Build configuration list for PBXNativeTarget "PDFGridTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +422,7 @@
 				84AFEE8B1A91360E0048CD58 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

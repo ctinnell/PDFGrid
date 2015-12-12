@@ -67,8 +67,10 @@ class PDFGridDocument {
         self.fileName = fileName
         
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
-        let documentsDirectory = paths[0] as String
-        self.filePath = documentsDirectory.stringByAppendingPathComponent(fileName).stringByAppendingPathExtension(".pdf")!
+        let documentsDirectory = paths[0]
+        
+        self.filePath = ("\(documentsDirectory)\(fileName).pdf")
+        //self.filePath = documentsDirectory.stringByAppendingPathComponent(fileName).stringByAppendingPathExtension(".pdf")!
         self.columnWidths = []
         self.gridHeaders = []
         self.columnTitleWidths = []
@@ -177,7 +179,7 @@ class PDFGridDocument {
     private func drawRow(rowValues: [String], startingYPosition: CGFloat, backgroundColor: UIColor, isColumnHeader: Bool) -> CGFloat {
         var xPosition = borderInset + lineWidth
         var column = 0
-        var thisRowHeight = (isColumnHeader) ? titleRowHeight : rowHeight
+        let thisRowHeight = (isColumnHeader) ? titleRowHeight : rowHeight
         for value in rowValues {
             let rect = CGRectMake(xPosition, startingYPosition, CGFloat(columnWidths[column]), thisRowHeight)
             drawRectangle(rect)
@@ -220,17 +222,15 @@ class PDFGridDocument {
     }
     
     private func drawDetailText(text: String, frame: CGRect, columnWidth: CGFloat, textFont: UIFont, rowHeight: CGFloat) {
-        var size = (text as NSString).sizeWithAttributes([NSFontAttributeName:textFont])
+        let size = (text as NSString).sizeWithAttributes([NSFontAttributeName:textFont])
         let adjustedFrame = CGRectMake(frame.origin.x, frame.origin.y, size.width, size.height)
         
         drawText(text, frame: adjustedFrame, columnWidth: columnWidth, adjustedRowHeight: rowHeight, textFont: textFont)
     }
     
     private func drawText(text: String, frame: CGRect, columnWidth: CGFloat, adjustedRowHeight: CGFloat, textFont: UIFont) {
-        let context = UIGraphicsGetCurrentContext()
-        
         let outerFrameSize = CGSizeMake(columnWidth, adjustedRowHeight)
-        var textFrame = centerFrame(frame, outerFrameSize: outerFrameSize)
+        let textFrame = centerFrame(frame, outerFrameSize: outerFrameSize)
         
         
         (text as NSString).drawWithRect(textFrame, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName : textFont,
@@ -253,14 +253,15 @@ class PDFGridDocument {
         var widths: [Float] = []
         var titleWidths: [Float] = []
         // start with the column titles
-        for (var x=0; x<countElements(columnTitles); x++) {
+        for (var x=0; x<columnTitles.count; x++) {
             // for multi-line column titles, we need to loop through each word in the title to determine width.
             // In this case, we will use titleWidths to draw the text for the column titles.
             if multiLineColumnTitles {
-                let titleWords = split(columnTitles[x], { $0 == " "}, maxSplit: Int.max, allowEmptySlices: false)
-                var oldWidth = Float(0.0)
+                let titleWords = columnTitles[x].characters.split(Int.max, allowEmptySlices: false, isSeparator: { $0 == " "}).map { String($0) }
+
+                let oldWidth = Float(0.0)
                 widths.append(Float(0.0)) // ensure a value
-                for (var y=0; y<countElements(titleWords); y++) {
+                for (var y=0; y<titleWords.count; y++) {
                     widths[x] = (newWidth(titleWords[y], oldWidth: oldWidth))
                 }
                 let wordHeight = sizeForString(columnTitles[x], width: CGFloat(widths[x])).height
@@ -286,7 +287,7 @@ class PDFGridDocument {
         let gridWidth = Float(pageSize.width - lineWidthAndBorderInsetWidth)
         if CGFloat(sumOfColumnWidths) < CGFloat(gridWidth) {
             let columnPadding = (gridWidth - sumOfColumnWidths) / Float(numberOfColumns)
-            for (var x=0; x<countElements(columnTitles); x++) {
+            for (var x=0; x<columnTitles.count; x++) {
                 widths[x] = widths[x] + columnPadding
             }
         }
